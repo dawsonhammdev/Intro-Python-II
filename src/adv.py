@@ -1,25 +1,32 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", "coins"),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", 'sword'),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+the distance, but there is no way across the chasm.""", "coins"),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""", "sword"),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""", "coins"),
+}
+
+item = {
+    'sword': Item("Rusty Sword", """A rusty sword will help you spread lock jaw fast."""),
+
+    'coins': Item("Gold Coins", """Use gold coins for clout.""")
 }
 
 
@@ -58,7 +65,7 @@ def try_direction(player, direction):
         print("There's nothing in that direction!")
 
 # Make a new player object that is currently in the 'outside' room.
-player = Player(room['outside'])
+player = Player(room['outside'], item)
 
 # Write a loop that:
 while True:
@@ -66,14 +73,24 @@ while True:
     # * Prints the current room name
     # * Prints the current description (the textwrap module might be useful here).
     print("\n")
-    print(player.location)
+    # print(player.location)
+    player.status()
     # * Waits for user input and decides what to do.
     first_char = input("\nfirst_char: ").strip().lower().split()
-    first_first_char = first_char[0]
-    first_char = first_first_char[0]
+    first_char = first_char[0]
+    
     # If the user enters "q", quit the game.
     if first_char == 'q':
         break
+
+
+    print(f"You have moved to the {player.location}.\n")
+    print("Here are you the items available in this room: \n")
+    products = room[3]
+    print(products)
+
+    product_selection = input("Select a product to buy: ")
+    player.add_to(item)
     #
     # If the user enters a cardinal direction, attempt to move to the room there.
     # Print an error message if the movement isn't allowed.
@@ -93,3 +110,11 @@ while True:
     elif first_char == 'w':
         # move to the west 
         try_direction(player, first_char)
+    elif first_char == 'i':
+        print({item for item in player.room.items})
+
+    # check user input
+    # split into array based on spacekey
+    # if length 1 user wants to move
+    # else check the first to see if it matches an action
+    # 
